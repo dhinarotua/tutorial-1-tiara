@@ -1,26 +1,37 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h5>Nama: </h5>
-<p>{{nama}}</p>
+<nav class="navbar navbar-expand-lg text-light bg-primary">
+    <div class="container-fluid">
+        <span class="navbar-text text-light">
+            {{nama}}
+          </span>
 
-<table>
-    <table border = "1">
-    <tr>
-    <th>Nama Barang</th>
-    <th>Harga Barang</th>
-    <th>Deskripsi</th>
-    </tr>
-    {% comment %} Tambahkan data di bawah baris ini {% endcomment %}
-    {% for barang in list_barang %}
-    <tr>
-        <th>{{barang.nama_barang}}</th>
-        <th>{{barang.harga_barang}}</th>
-        <th>{{barang.deskripsi}}</th>
-    </tr>
-    {% endfor %}
-</table>
-<h5>Sesi terakhir login: {{ last_login }}</h5>
-<button><a href="{% url 'wishlist:logout' %}">Logout</a></button>
+      <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        </ul>
+        <a class="navbar-brand text-light" href="{% url 'wishlist:logout' %}">Logout</a>
+      </div>
+    </div>
+  </nav>
+<div class = "justify-content-center " >
+    <table class="table table-info table-bordered">
+        <table border = "1" class="table table-info table-striped table-bordered">
+        <tr>
+        <th class="table-success text-center">Nama Barang</th>
+        <th class="table-success text-center">Harga Barang</th>
+        <th class="table-success text-center">Deskripsi</th>
+        </tr>
+        {% comment %} Tambahkan data di bawah baris ini {% endcomment %}
+        {% for barang in list_barang %}
+        <tr>
+            <th>{{barang.nama_barang}}</th>
+            <th>{{barang.harga_barang}}</th>
+            <th>{{barang.deskripsi}}</th>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+<h5 class="fs-6">Sesi terakhir login: {{ last_login }}</h5>
 
 {% endblock content %}
