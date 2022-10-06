@@ -1,4 +1,5 @@
 import datetime
+from telnetlib import STATUS
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.http import HttpResponse
@@ -11,6 +12,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
+from django.http.response import JsonResponse
 
 @login_required(login_url='/wishlist/login/')
 # Create your views here.
@@ -72,3 +74,24 @@ def logout_user(request):
     response = HttpResponseRedirect(reverse('wishlist:login'))
     response.delete_cookie('last_login')
     return response
+
+@login_required(login_url='/wishlist/login/')
+def show_wishlist_ajax(request):
+    data_barang_wishlist = BarangWishlist.objects.all()
+    context = {
+        'list_barang': data_barang_wishlist,
+        'nama': 'Dhina Rotua Mutiara',
+        'last_login': request.COOKIES['last_login'],
+    }
+    return render(request, "wishlist_ajax.html", context)
+
+@login_required(login_url='/wishlist/login/')
+def add_wishlist_item(request):
+    if request.method == 'POST':
+        nama_barang = request.POST.get('nama_barang')
+        harga_barang = request.POST.get('harga_barang')
+        deskripsi = request.POST.get('deskripsi')
+        item = BarangWishlist.objects.create(nama_barang=nama_barang, harga_barang=harga_barang, deskripsi=deskripsi)
+        item.save()
+        return JsonResponse({"instance": "Proyek Dibuat"}, status=200)
+
